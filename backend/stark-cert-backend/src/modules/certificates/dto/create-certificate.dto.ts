@@ -1,6 +1,8 @@
 import { IsString, IsUUID, IsEmail, IsOptional, IsDateString, IsObject, IsEnum, IsArray, IsUrl, MinLength, MaxLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { CertificateType } from '../enums/certificate-type.enum';
+import { CertificateStatus } from '../enums/certificate-status.enum';
+
 
 export class CreateCertificateDto {
   @ApiProperty({ example: 'Web Development Certificate', description: 'Certificate title' })
@@ -78,6 +80,15 @@ export class CreateCertificateDto {
   @IsArray()
   @IsString({ each: true })
   assetUrls?: string[];
+
+   @ApiPropertyOptional({
+    example: CertificateStatus.PENDING,
+    enum: CertificateStatus,
+    description: 'Lifecycle status of the certificate',
+  })
+  @IsOptional()
+  @IsEnum(CertificateStatus)
+  status?: CertificateStatus;
 
   @ApiPropertyOptional({ description: 'Blockchain-specific metadata' })
   @IsOptional()
